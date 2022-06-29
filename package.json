@@ -6,9 +6,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "latest",
+    "@formkit/auto-animate": "^1.0.0-beta.1",
+    "lottie-react": "^2.3.1",
+    "next": "^12.2.0",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "react-icons": "^4.4.0"
   },
   "devDependencies": {
     "@types/node": "17.0.35",
