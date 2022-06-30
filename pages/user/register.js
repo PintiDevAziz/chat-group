@@ -9,6 +9,7 @@ import { auth, storage } from "../../helpers/firebase";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import Link from "next/link";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import ButtonLoading from "../../components/ButtonLoading";
 const Register = () => {
   const {
     handleRegister,
@@ -142,21 +143,32 @@ const Register = () => {
               handleRegister(
                 formData.email,
                 formData.password,
-                formData.userName,
+                formData.userName
               )
             }
             disabled={registerError ? true : false}
             className="ml-full  w-full mx-auto rounded disabled:opacity-60 disabled:cursor-not-allowed bg-themeBlue h-10"
           >
-            {registerLoading ? "Loading" : "Register"}
+            {registerLoading ? (
+              <div className="flex w-full items-center justify-center">
+                <p className="mr-1">Loading</p>
+                <ButtonLoading />
+              </div>
+            ) : (
+              "Register"
+            )}
           </button>
         </div>
         <div className="flex items-center justify-between w-full mt-5 ">
           <Link href="/user/login">
-            <a className="hover:underline decoration-themeBlue underline-offset-4">Already Have Account</a>
+            <a className="hover:underline decoration-themeBlue underline-offset-4">
+              Already Have Account
+            </a>
           </Link>
           <Link href="/user/reset-password">
-            <a className="hover:underline decoration-themeBlue underline-offset-4">Reset Password</a>
+            <a className="hover:underline decoration-themeBlue underline-offset-4">
+              Reset Password
+            </a>
           </Link>
         </div>
       </div>

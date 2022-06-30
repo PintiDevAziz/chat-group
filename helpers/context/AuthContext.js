@@ -32,7 +32,7 @@ export const AuthContextProvider = ({ children }) => {
     setRegisterLoading(true);
     const storageRef = ref(
       storage,
-      `gs://chat-group-7c45c.appspot.com/userAvatars/${userName}-avatar`
+      `gs://chat-group-7c45c.appspot.com/userAvatars/${email}-avatar`
     );
     uploadBytes(storageRef, avatar).then((data) => {
       const avatarRef = ref(storage, data.ref.fullPath);
@@ -74,7 +74,7 @@ export const AuthContextProvider = ({ children }) => {
         setRegisterError(null);
         setResetSucces(true);
       })
-      .catch((err) => setRegisterError(err.code.replace("auth/", "")));
+      .catch((err) => setResetPasswordError(err.code.replace("auth/", "")));
   };
   const authData = {
     handleLogin,

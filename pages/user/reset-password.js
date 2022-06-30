@@ -1,8 +1,11 @@
 import React from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { AuthContext } from "../../helpers/context/AuthContext";
+import { useRouter } from "next/dist/client/router";
 import ErrorText from "../../components/ErrorText";
 import Link from "next/link";
 import Lottie from "lottie-react";
@@ -16,6 +19,7 @@ const Login = () => {
     resetPasswordError,
     setResetPasswordError,
     resetSucces,
+    user
   } = useContext(AuthContext);
   useEffect(() => {
     if (email.match(emailValidator)) {
@@ -25,17 +29,19 @@ const Login = () => {
       setResetPasswordError("Please fill the form");
     };
   }, [email]);
-   useEffect(() => {
-     if (resetSucces) {
-       let timeout = setShowAnimation(true);
-       setTimeout(() => {
-         setShowAnimation(false);
-       }, 2000);
-     }
-   }, [resetSucces]);
   console.log(showAnimation);
+  const [animation] = useAutoAnimate();
+  const router = useRouter()
+  useEffect(() => {
+    if (user !== null) {
+      router.push("/");
+    }
+  }, [user]);
   return (
-    <div className="w-full h-screen bg-themeGray flex items-center justify-center">
+    <div
+      ref={animation}
+      className="w-full h-screen bg-themeGray flex items-center justify-center"
+    >
       {resetSucces ? (
         <div className="rounded bg-themeBlack  font-mono flex flex-col p-6 text-white w-[35rem]">
           {showAnimation ? (
@@ -51,9 +57,9 @@ const Login = () => {
                 We send an email that contains a link for reseting your account
                 password
               </p>
-              <Link href={"/"}>
+              <Link href={"/user/login"}>
                 <a className=" flex items-center w-full h-10 justify-center mt-4 bg-themeBlue hover:bg-themeBlue/80">
-                  Back to the home
+                  Back to the Login
                 </a>
               </Link>
             </>
@@ -76,6 +82,9 @@ const Login = () => {
             <button
               onClick={() => {
                 handleResetPassword(email);
+                setTimeout(() => {
+                  setShowAnimation(false);
+                }, [2000]);
               }}
               className="ml-full mx-auto  w-full rounded disabled:opacity-60 disabled:cursor-not-allowed bg-themeBlue h-10"
             >
