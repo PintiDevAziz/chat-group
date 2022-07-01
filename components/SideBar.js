@@ -38,8 +38,8 @@ const SideBar = () => {
         channelPopUp={channelPopUp}
         setChannelPopUp={setChannelPopUp}
       />
-      <div className="h-screen font-mono bg-themeBlack py-4 px-6 w-72 text-white relative">
-        <div className="w-full flex items-center justify-between mb-6">
+      <div className="h-screen flex-shrink-0 font-mono bg-themeBlack py-4 px-6 w-72 text-white relative">
+        <div className="w-full flex items-center justify-between mb-6 shadow ">
           <h2 className="text-lg font-semibold">Channels</h2>
           <button
             className="bg-themeGray p-2 rounded-md hover:bg-themeGray/80"

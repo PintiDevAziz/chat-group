@@ -33,7 +33,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
           createdAt: new serverTimestamp(),
         },
         members: arrayUnion(user.email),
-        messages: {},
+        messages: [],
       });
     }
     await setLoading(false);
