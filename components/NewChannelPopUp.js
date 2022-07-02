@@ -32,7 +32,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
           name: channelInfo.channelName,
           createdAt: new serverTimestamp(),
         },
-        members: arrayUnion(user.email),
+        members: arrayUnion(user.uid),
         messages: [],
       });
     }

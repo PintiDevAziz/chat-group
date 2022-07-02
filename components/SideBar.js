@@ -11,6 +11,9 @@ import NewChannelPopUp from "../components/NewChannelPopUp";
 import { collection, onSnapshot } from "firebase/firestore";
 import ChannelItem from "../components/ChannelItem";
 import Loading from "../components/Loading";
+import { useRouter } from "next/router";
+import SelectedChannel from "../components/SelectedChannel";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 const SideBar = () => {
   const { user, userLoading } = useContext(AuthContext);
   const [userModal, setUserModal] = useState(false);
@@ -18,6 +21,8 @@ const SideBar = () => {
   const [loading, setLoading] = useState();
   const [channels, setChannels] = useState([]);
   const [search, setSearch] = useState("");
+  const [animation] = useAutoAnimate();
+  const router = useRouter();
   useEffect(() => {
     setLoading(true);
 
@@ -26,12 +31,13 @@ const SideBar = () => {
       await setChannels(
         snap.docs
           .map((doc) => doc.data())
-          .filter((data) => data.members.includes(user?.email))
+          .filter((data) => data.members.includes(user?.uid))
       );
       await setLoading(false);
     });
     return unsubscirbe;
   }, [user]);
+
   return (
     <>
       <NewChannelPopUp
@@ -39,43 +45,59 @@ const SideBar = () => {
         setChannelPopUp={setChannelPopUp}
       />
       <div className="h-screen flex-shrink-0 font-mono bg-themeBlack py-4 px-6 w-72 text-white relative">
-        <div className="w-full flex items-center justify-between mb-6 shadow ">
-          <h2 className="text-lg font-semibold">Channels</h2>
-          <button
-            className="bg-themeGray p-2 rounded-md hover:bg-themeGray/80"
-            onClick={() => {
-              setChannelPopUp(true);
-            }}
-          >
-            <AiOutlinePlus size={19} />
-          </button>
-        </div>
-        <label className="relative w-full flex items-center mb-6">
-          <input
-            type="text"
-            className="bg-themeGray rounded outline-none peer px-2 pl-10 w-full h-10"
-            placeholder="Search"
-            onChange={(e) => {
-              setSearch(e.target.value);
-            }}
-          />
-          <AiOutlineSearch
-            className="absolute left-2 peer-focus-within:text-white text-gray-400 transition-all"
-            size={18}
-          />
-        </label>
-        <div className="flex flex-col gap-y-3">
-          {loading ? (
-            <Loading />
+        {!router.query.channelId && (
+          <div className="w-full flex items-center justify-between mb-6 shadow ">
+            <h2 className="text-lg font-semibold">Channels</h2>
+            <button
+              className="bg-themeGray p-2 rounded-md hover:bg-themeGray/80"
+              onClick={() => {
+                setChannelPopUp(true);
+              }}
+            >
+              <AiOutlinePlus size={19} />
+            </button>
+          </div>
+        )}
+        {!router.query.channelId && (
+          <label className="relative w-full flex items-center mb-6">
+            <input
+              type="text"
+              className="bg-themeGray rounded outline-none peer px-2 pl-10 w-full h-10"
+              placeholder="Search"
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+            />
+            <AiOutlineSearch
+              className="absolute left-2 peer-focus-within:text-white text-gray-400 transition-all"
+              size={18}
+            />
+          </label>
+        )}
+        <div ref={animation} className="flex flex-col gap-y-3">
+          {router.query.channelId ? (
+            <SelectedChannel
+              channel={
+                channels.filter(
+                  (c) => c.channelMeta.id == router.query.channelId
+                )[0]
+              }
+            />
           ) : (
-            channels
-              .filter((channel) =>
-                channel.channelMeta.name.includes(search.toLowerCase())
-              )
-              .map((c) => <ChannelItem channelMeta={c.channelMeta} />)
+            <>
+              {loading ? (
+                <Loading />
+              ) : (
+                channels
+                  .filter((channel) =>
+                    channel.channelMeta.name.includes(search.toLowerCase())
+                  )
+                  .map((c) => <ChannelItem channel={c} />)
+              )}
+            </>
           )}
         </div>
-        {!userLoading && (
+        {!userLoading && user && (
           <div className="absolute  bottom-0 py-3 bg-themeBlackDarker  left-0 flex items-center justify-around  w-72 ">
             <img
               className="rounded-lg w-10 h-10 object-cover"

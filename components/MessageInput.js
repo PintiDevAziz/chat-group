@@ -1,14 +1,4 @@
-import {
-  arrayUnion,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import { IoMdSend } from "react-icons/io";
 import { db } from "../helpers/firebase";
@@ -23,7 +13,6 @@ const MessageInput = ({ messageInput, setMessageInput, channelId }) => {
       const docRef = doc(db, "channels", channelId);
       onSnapshot(docRef, (snap) => {
         setAllMessages(snap.data().messages);
-        console.log(allMessages);
       });
     }
   }, [channelId]);
@@ -34,8 +23,9 @@ const MessageInput = ({ messageInput, setMessageInput, channelId }) => {
       const docRef = doc(db, "channels", channelId);
       await onSnapshot(docRef, (snap) => {
         setAllMessages(snap.data().messages);
-        console.log(allMessages);
       });
+      setMessageInput("");
+
       if (allMessages) {
         await setDoc(
           docRef,
@@ -46,6 +36,7 @@ const MessageInput = ({ messageInput, setMessageInput, channelId }) => {
                 sendedBy: {
                   name: user.displayName,
                   avatar: user.photoURL,
+                  id: user.uid,
                 },
                 content: messageInput,
                 sendedAt: date.toISOString(),
@@ -56,7 +47,6 @@ const MessageInput = ({ messageInput, setMessageInput, channelId }) => {
         );
       }
     }
-    setMessageInput("");
   };
   return (
     <div className="w-full p-4 flex items-center relative">

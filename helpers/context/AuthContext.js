@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../firebase";
+import { db, storage } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -12,6 +12,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -22,6 +23,18 @@ export const AuthContextProvider = ({ children }) => {
   const [resetSucces, setResetSucces] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
   const [resetPasswordError, setResetPasswordError] = useState(null);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setUserLoading(false);
+      } else {
+        setUserLoading(true);
+      }
+      return () => unsub;
+    });
+  }, []);
   const handleLogin = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password)
       .then((user) => setLoginError(null))
@@ -38,12 +51,17 @@ export const AuthContextProvider = ({ children }) => {
       const avatarRef = ref(storage, data.ref.fullPath);
       getDownloadURL(avatarRef).then((img) => {
         createUserWithEmailAndPassword(auth, email, password)
-          .then((user) => {
-            updateProfile(user.user, {
+          .then(async (user) => {
+            await updateProfile(user.user, {
               photoURL: img,
               displayName: userName,
             });
-
+            await setDoc(doc(db, "users", user.user.uid), {
+              name: user.user.displayName,
+              email: user.user.email,
+              photoUrl: user.user.photoURL,
+              id: user.user.uid,
+            });
             setRegisterError(null);
             setRegisterLoading(false);
           })
@@ -57,17 +75,6 @@ export const AuthContextProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setUserLoading(false);
-      } else {
-        setUserLoading(true);
-      }
-      return () => unsub;
-    });
-  }, []);
   const handleResetPassword = (email) => {
     sendPasswordResetEmail(auth, email)
       .then(() => {
