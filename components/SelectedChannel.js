@@ -35,9 +35,11 @@ const SelectedChannel = ({ channel }) => {
         </Link>
       </div>
       <div className="w-full flex-shrink-0  mb-7">
-        <h2 className="font-semibold text-xl mb-4">
-          {channel?.channelMeta.name}
-        </h2>
+        <div>
+          <h2 className="font-semibold text-xl mb-4">
+            {channel?.channelMeta.name}
+          </h2>
+        </div>
         <p className="break-all ">{channel?.channelMeta.describtion}</p>
       </div>
       <div className="w-full">

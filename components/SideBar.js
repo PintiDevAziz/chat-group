@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import SelectedChannel from "../components/SelectedChannel";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 const SideBar = () => {
-  const { user, userLoading } = useContext(AuthContext);
+  const { user, userLoading, setUser } = useContext(AuthContext);
   const [userModal, setUserModal] = useState(false);
   const [channelPopUp, setChannelPopUp] = useState(false);
   const [loading, setLoading] = useState();
@@ -121,6 +121,7 @@ const SideBar = () => {
                 <button
                   onClick={() => {
                     signOut(auth);
+                    setUser(null);
                   }}
                   className="flex items-center gap-x-2  w-full text-red-500    hover:bg-red-300/20  p-2 rounded-md  transition-all  "
                 >
