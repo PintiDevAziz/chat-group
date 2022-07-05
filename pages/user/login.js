@@ -1,4 +1,5 @@
 import React from "react";
+import ButtonLoading from "../../components/ButtonLoading";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -8,7 +9,7 @@ import { useRouter } from "next/dist/client/router";
 import { auth } from "../../helpers/firebase";
 import Link from "next/link";
 const Login = () => {
-  const { handleLogin, loginError, setLoginError, user } =
+  const { handleLogin, loginError, setLoginError, user, loginLoading } =
     useContext(AuthContext);
   const router = useRouter();
   useEffect(() => {
@@ -67,13 +68,17 @@ const Login = () => {
           </label>
           <ErrorText error={loginError} />
           <button
-            onClick={(e) =>
-              handleLogin(formData.email, formData.password, e)
-            }
+            onClick={(e) => handleLogin(formData.email, formData.password, e)}
             disabled={loginError ? true : false}
             className="ml-full mx-auto  w-full rounded disabled:opacity-60 disabled:cursor-not-allowed bg-themeBlue h-10"
           >
-            Login
+            {loginLoading ? (
+              <div className="flex items-center w-full justify-center gap-x-3">
+                Loggining <ButtonLoading />
+              </div>
+            ) : (
+              "Login"
+            )}
           </button>
         </div>
         <div className="flex items-center justify-between w-full mt-5 ">

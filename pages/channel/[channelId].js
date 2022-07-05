@@ -49,7 +49,7 @@ const ChannelId = () => {
         <p>{currentChannel?.channelMeta.name}</p>
         {currentChannel &&
           user &&
-          user?.uid == currentChannel?.channelMeta.admin && (
+          user?.uid == currentChannel?.channelMeta.admin.id && (
             <button
               onClick={() => {
                 setAddUserModal(true);

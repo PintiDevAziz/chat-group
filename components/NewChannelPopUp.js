@@ -26,7 +26,10 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
     if (user) {
       await setDoc(docRef, {
         channelMeta: {
-          admin: user.uid,
+          admin: {
+            id: user.uid,
+            name: user.displayName,
+          },
           id: id,
           describtion: channelInfo.channelBio,
           name: channelInfo.channelName,

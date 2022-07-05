@@ -22,6 +22,7 @@ export const AuthContextProvider = ({ children }) => {
   const [avatar, setAvatar] = useState(null);
   const [resetSucces, setResetSucces] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
   const [resetPasswordError, setResetPasswordError] = useState(null);
 
   useEffect(() => {
@@ -36,9 +37,13 @@ export const AuthContextProvider = ({ children }) => {
     });
   }, []);
   const handleLogin = async (email, password) => {
+    setLoginLoading(true);
     await signInWithEmailAndPassword(auth, email, password)
       .then((user) => setLoginError(null))
-      .catch((err) => setLoginError(err.code.replace("auth/", "")));
+      .catch((err) => {
+        setLoginError(err.code.replace("auth/", ""));
+        setLoginLoading(false);
+      });
   };
 
   const handleRegister = async (email, password, userName) => {
@@ -101,6 +106,7 @@ export const AuthContextProvider = ({ children }) => {
     registerLoading,
     resetSucces,
     setResetSucces,
+    loginLoading
   };
   return (
     <AuthContext.Provider value={authData}>{children}</AuthContext.Provider>

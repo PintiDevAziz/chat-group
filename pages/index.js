@@ -1,10 +1,19 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../helpers/context/AuthContext";
 import Lottie from "lottie-react";
 import welcomeAnimation from "../animations/welcome.json";
 import Link from "next/link";
+import toast from "react-hot-toast";
 const Index = () => {
   const { user } = useContext(AuthContext);
+  useEffect(() => {
+    if (user) {
+      toast.success("Logined Succesfuly");
+    } else {
+      toast.error("Log out");
+    }
+    return () => null;
+  }, [user]);
   return (
     <>
       {!user ? (

@@ -37,7 +37,6 @@ const SideBar = () => {
     });
     return unsubscirbe;
   }, [user]);
-
   return (
     <>
       <NewChannelPopUp
@@ -97,7 +96,7 @@ const SideBar = () => {
             </>
           )}
         </div>
-        {!userLoading && user && (
+        {!userLoading && user && !router.query.channelId && (
           <div className="absolute  bottom-0 py-3 bg-themeBlackDarker  left-0 flex items-center justify-around  w-72 ">
             <img
               className="rounded-lg w-10 h-10 object-cover"
@@ -111,7 +110,7 @@ const SideBar = () => {
                   userModal ? "opacity-100 scale-100" : "opacity-0  scale-0"
                 } rounded-md absolute bottom-14  transition-all  flex flex-col gap-y-2 right-0  w-40   p-3 box-content border-gray-700 border`}
               >
-                <Link href={"/user/profile"}>
+                <Link href={`user/profile/${user.uid}`}>
                   <a className="flex items-center gap-x-2   w-full   hover:bg-white/20  p-2 rounded-md  transition-all  ">
                     <FaUserCircle />
                     <p className="flex-shrink-0">My Profile</p>

@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const [hideSideBar, setHideSideBar] = useState(false);
   useEffect(() => {
-    if (router.asPath.includes("/user")) {
+    if (router.asPath.includes("user")) {
       setHideSideBar(true);
     } else {
       setHideSideBar(false);
