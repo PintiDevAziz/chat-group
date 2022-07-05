@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
-    @apply font-mono
+* {
+  @apply font-mono;
+}
+::-webkit-scrollbar {
+  @apply w-1  ;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-themeBlue rounded-md ;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-themeBlue/80 ;
 }

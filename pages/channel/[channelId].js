@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useId, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -17,6 +17,7 @@ const ChannelId = () => {
   const [loading, setLoading] = useState();
   const [addUserModal, setAddUserModal] = useState(false);
   const { user, userLoading } = useContext(AuthContext);
+  const bottom = useRef();
   useEffect(() => {
     if (channelId) {
       setLoading(true);
@@ -32,6 +33,12 @@ const ChannelId = () => {
       setMessages(currentChannel.messages);
     }
   }, [currentChannel]);
+  useEffect(() => {
+    bottom.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }, [messages]);
   return (
     <div className="bg-themeGray  w-[calc(100vw-18rem)] h-screen overflow-y-auto overflow-x-hidden  ">
       <AddUserToGroupPopUp
@@ -41,8 +48,8 @@ const ChannelId = () => {
       <div className="bg-themeGray justify-between sticky shadow-md  w-full px-16  h-14 flex items-center text-white uppercase tracking-widest">
         <p>{currentChannel?.channelMeta.name}</p>
         {currentChannel &&
-          !userLoading &&
-          user.uid == currentChannel.channelMeta.admin && (
+          user &&
+          user?.uid == currentChannel?.channelMeta.admin && (
             <button
               onClick={() => {
                 setAddUserModal(true);
@@ -54,14 +61,15 @@ const ChannelId = () => {
             </button>
           )}
       </div>
-      <div className="   overflow-auto h-[calc(100vh-8.5rem)] px-10 py-5 flex flex-col gap-y-4 w-[calc(100vw-18rem)]">
+      <div className="   hover:overflow-auto overflow-hidden  h-[calc(100vh-8.5rem)] px-10 py-5 flex flex-col gap-y-4 w-[calc(100vw-18rem)]">
         {loading ? (
           <>Loading</>
         ) : (
-          messages.map((message, indeks) => (
+          messages.map((message) => (
             <MessageItem key={uniqid()} message={message} />
           ))
         )}
+        <div ref={bottom}></div>
       </div>
       <MessageInput
         messageInput={messageInput}

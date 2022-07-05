@@ -1,8 +1,10 @@
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
+import toast from "react-hot-toast";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { db } from "../helpers/firebase";
+import copy from "copy-to-clipboard";
 const SelectedChannel = ({ channel }) => {
   const [members, setMembers] = useState([]);
   useEffect(() => {
@@ -49,11 +51,10 @@ const SelectedChannel = ({ channel }) => {
             <div
               key={key}
               onClick={(e) => {
-                navigator.clipboard
-                  .writeText(member.uid)
-                  .then((data) => console.log(data.value));
+                copy(member.id);
+                toast.success('Id Copied Succesfuly')
               }}
-              className="flex items-center gap-x-4 mb-4 hover:bg-white/20 p-2 rounded-md"
+              className="flex cursor-pointer items-center gap-x-4 mb-4 hover:bg-white/20 p-2 rounded-md"
             >
               <img
                 src={member.photoUrl}

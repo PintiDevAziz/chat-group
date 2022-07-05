@@ -1,16 +1,10 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
-import Router, { useRouter } from "next/router";
-import React, { useContext, useEffect } from "react";
-import { AiOutlineUsergroupDelete } from "react-icons/ai";
+import React, { useContext } from "react";
 import { AuthContext } from "../helpers/context/AuthContext";
-import { auth, db } from "../helpers/firebase";
 import Lottie from "lottie-react";
 import welcomeAnimation from "../animations/welcome.json";
 import Link from "next/link";
 const Index = () => {
-  const { user, setUser, userLoading } = useContext(AuthContext);
-  const router = useRouter();
+  const { user } = useContext(AuthContext);
   return (
     <>
       {!user ? (

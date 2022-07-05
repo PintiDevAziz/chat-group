@@ -2,14 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import ErrorText from "../components/ErrorText";
 import { AiOutlineClose } from "react-icons/ai";
-import { arrayUnion, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, setDoc } from "firebase/firestore";
 import { db } from "../helpers/firebase";
-import uniqid from "uniqid/index";
 import { AuthContext } from "../helpers/context/AuthContext";
 import ButtonLoading from "../components/ButtonLoading";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
 const AddUserToGroupPopUp = ({ channelPopUp, setChannelPopUp }) => {
-  const { user } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [errorAnimate] = useAutoAnimate({
     duration: 300,
@@ -29,13 +28,14 @@ const AddUserToGroupPopUp = ({ channelPopUp, setChannelPopUp }) => {
         },
         { merge: true }
       )
-        .then(() => {
+        .then((d) => {
           setLoading(false);
           setIdInput("");
           setChannelPopUp(false);
         })
         .catch((err) => setIdInputError(err.code));
     }
+    toast.success("User Added Succesfuly");
   };
   useEffect(() => {
     if (idInput.length < 28) {
