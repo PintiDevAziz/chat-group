@@ -8,6 +8,8 @@ import MessageInput from "../../components/MessageInput";
 import uniqid from "uniqid";
 import { AuthContext } from "../../helpers/context/AuthContext";
 import AddUserToGroupPopUp from "../../components/AddUserGroupPopUp";
+import Lottie from "lottie-react";
+import ClosedAnimation from "../../animations/closed.json";
 const ChannelId = () => {
   const router = useRouter();
   const { channelId } = router.query;
@@ -64,18 +66,31 @@ const ChannelId = () => {
       <div className="   hover:overflow-auto overflow-hidden  h-[calc(100vh-8.5rem)] px-10 py-5 flex flex-col gap-y-4 w-[calc(100vw-18rem)]">
         {loading ? (
           <>Loading</>
-        ) : (
+        ) : currentChannel && currentChannel.members.includes(user.uid) ? (
           messages.map((message) => (
             <MessageItem key={uniqid()} message={message} />
           ))
+        ) : (
+          <div className="w-full h-full flex items-center justify-center flex-col">
+            <Lottie
+              animationData={ClosedAnimation}
+              loop={true}
+              className="w-[30rem]"
+            />
+            <h2 className="capitalize text-white text-3xl font-semibold">
+              You are not member of this group
+            </h2>
+          </div>
         )}
         <div ref={bottom}></div>
       </div>
-      <MessageInput
-        messageInput={messageInput}
-        setMessageInput={setMessageInput}
-        channelId={channelId}
-      />
+      {currentChannel && currentChannel.members.includes(user.uid) && (
+        <MessageInput
+          messageInput={messageInput}
+          setMessageInput={setMessageInput}
+          channelId={channelId}
+        />
+      )}
     </div>
   );
 };

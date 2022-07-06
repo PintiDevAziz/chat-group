@@ -19,7 +19,7 @@ const Login = () => {
     resetPasswordError,
     setResetPasswordError,
     resetSucces,
-    user
+    user,
   } = useContext(AuthContext);
   useEffect(() => {
     if (email.match(emailValidator)) {
@@ -31,7 +31,7 @@ const Login = () => {
   }, [email]);
   console.log(showAnimation);
   const [animation] = useAutoAnimate();
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (user !== null) {
       router.push("/");
@@ -46,7 +46,7 @@ const Login = () => {
         <div className="rounded bg-themeBlack  font-mono flex flex-col p-6 text-white w-[35rem]">
           {showAnimation ? (
             <div className="w-[35rem] flex items-center justify-center h-full">
-              <Lottie animationData={mailAnimation} loop={false} />
+              <Lottie animationData={mailAnimation} />
             </div>
           ) : (
             <>

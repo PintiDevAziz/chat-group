@@ -4,6 +4,7 @@ import Lottie from "lottie-react";
 import welcomeAnimation from "../animations/welcome.json";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import ChattingAnimation from "../animations/chatting.json";
 const Index = () => {
   const { user } = useContext(AuthContext);
   useEffect(() => {
@@ -40,7 +41,16 @@ const Index = () => {
             </Link>
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className="text-white flex items-center gap-y-16 justify-center flex-col w-full h-screen bg-themeGray">
+          <div className="w-1/2">
+            <Lottie animationData={ChattingAnimation} />
+          </div>
+          <h1 className="text-2xl tracking-widest capitalize animate-pulse">
+            Awesome Now Chose a group or creat new one and then start chatting
+          </h1>
+        </div>
+      )}
     </>
   );
 };

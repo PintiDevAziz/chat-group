@@ -46,7 +46,7 @@ const SideBar = () => {
       <div className="h-screen flex-shrink-0 font-mono bg-themeBlack py-4 px-6 w-72 text-white relative">
         {!router.query.channelId && (
           <div className="w-full flex items-center justify-between mb-6 shadow ">
-            <h2 className="text-lg font-semibold">Channels</h2>
+            <h2 className="text-lg font-semibold">Groups</h2>
             <button
               className="bg-themeGray p-2 rounded-md hover:bg-themeGray/80"
               onClick={() => {

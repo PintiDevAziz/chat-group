@@ -48,7 +48,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
   };
   useEffect(() => {
     if (!channelInfo.channelName) {
-      setchannelInfoError("You have to use a name for channel");
+      setchannelInfoError("You have to use a name for group");
     }
     return () => {
       setchannelInfoError(null);
@@ -71,7 +71,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
       </button>
       <div className="bg-themeBlack text-white p-6 w-[35rem]  rounded-lg">
         <h2 className=" uppercase font-semibold  tracking-widest mb-5">
-          New Channel
+          New Group
         </h2>
         <input
           type="text"
@@ -82,7 +82,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
               channelName: e.target.value,
             });
           }}
-          placeholder="Channel Name"
+          placeholder="Group Name"
           className="bg-[#3c393f] w-full h-10 rounded-md px-4 outline-none mb-5"
         />
         <textarea
@@ -94,7 +94,7 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
               channelName: channelInfo.channelName,
             });
           }}
-          placeholder="Channel Description (Optional)"
+          placeholder="Group Description (Optional)"
           className="bg-[#3c393f] resize-none w-full h-20 pt-2 rounded-md px-4 outline-none"
         />
         <div className="w-full flex mt-2" ref={errorAnimate}>
@@ -103,15 +103,15 @@ const NewChannelPopUp = ({ channelPopUp, setChannelPopUp }) => {
         <button
           disabled={channelInfoError ? true : false}
           onClick={handleCreateChannel}
-          className="bg-themeBlue disabled:opacity-60 disabled:cursor-not-allowed hover:bg-themeBlue/70 transition-all flex items-center justify-center rounded-md mt-5  w-32 h-10  ml-[calc(100%-8rem)]"
+          className="bg-themeBlue disabled:opacity-60 disabled:cursor-not-allowed hover:bg-themeBlue/70 transition-all flex items-center justify-center rounded-md mt-5  w-44 h-10  ml-[calc(100%-11rem)]"
         >
           {loading ? (
             <div className="flex items-center  justify-center gap-x-2">
-              <p>Loading</p>
+              <p>Group Creating</p>
               <ButtonLoading />
             </div>
           ) : (
-            "Save"
+            "Create Group"
           )}
         </button>
       </div>
