@@ -22,4 +22,4 @@ Only group admins can add new member to group ✅
 
 You can visit package.json file for get information about other dependecices
 
-Demo Link Is Right here
+Demo Link Is [right here](https://chat-group-iameziz.vercel.app/)
